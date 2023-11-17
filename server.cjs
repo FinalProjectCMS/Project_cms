@@ -23,6 +23,7 @@ app.get('/api/news', async (req, res) => {
       title: article.title,
       description: article.description,
       url: article.url,
+      image:article.image,
     }));
 
     res.json(articles);

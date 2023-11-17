@@ -21,15 +21,24 @@ function App() {
   return (
     <>
       <h1>News:</h1>
-      <ul>
+      <table>
       {news.map(article => (
-        <li key={article.title}>
-        {article.title}
-        <p>{article.description}</p>
-        </li>
+        <tr key={article.title}>
+          <td>
+             <img src={article.image} alt="img" width='250px' />
+          </td>
+          <td>
+          {article.title}
+          <p>{article.description}</p>
+          </td>
+        
+        <td>
+          <button>Accept</button>
+        </td>
+        </tr>
 ))}
 
-      </ul>
+      </table>
     </>
   )
 }
