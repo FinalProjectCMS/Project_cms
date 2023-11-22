@@ -17,7 +17,7 @@ app.get('/api/news', async (req, res) => {
       params: {
         token: apiKey,
         country: 'in',  // Country code for India
-        q: 'Kerala',   //Keyword for Thiruvananthapuram
+        q: 'Kerala',   
       },
     });
 
