@@ -1,7 +1,5 @@
 import { useState,useEffect } from 'react'
 
-
-
 function App() {
   const[news,setNews] = useState([]);
   const[loading,setLoading] = useState(true);
@@ -60,6 +58,7 @@ function App() {
             <td>
             {article.title}
             <p>{article.description}</p>
+            <p>{article.sentiment}</p>
             </td>
           
           <td>

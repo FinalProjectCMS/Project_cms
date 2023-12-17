@@ -1,45 +1,84 @@
 const express = require('express');
 const axios = require('axios');
+const Sentiment = require('sentiment');
 const app = express();
 const port = 3000;
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
-const apiKey = '2c979581b679b06c3cb05f0f114316ce'; 
+const apiKey = '2c979581b679b06c3cb05f0f114316ce';
 const gnewsApiUrl = 'https://gnews.io/api/v4/top-headlines';
 
 let acceptedNews = [];
+let accept_sentimentnews = [];
+function performSentimentAnalysis(text) {
+  const sentiment = new Sentiment();
+  const result = sentiment.analyze(text);
+  return result.score > 0 ? 'Positive' : result.score < 0 ? 'Negative' : 'Neutral';
+}
 
 app.get('/api/news', async (req, res) => {
   try {
     const response = await axios.get(gnewsApiUrl, {
       params: {
         token: apiKey,
-        country: 'in',  // Country code for India
-        q: 'Kerala',   
+        country: 'in',
+        q: 'Kerala',
+        lang: 'en',
       },
     });
 
-    const articles = response.data.articles.map(article => ({
-      title: article.title,
-      description: article.description,
-      url: article.url,
-      image:article.image,
-    }));
+    const articlesWithSentiment = response.data.articles.map(article => {
+      const sentiment = performSentimentAnalysis(article.title);
+      return {
+        title: article.title,
+        description: article.description,
+        url: article.url,
+        image: article.image,
+        sentiment,
+      };
+    });
 
-    res.json(articles);
+    const accept_sentiment = articlesWithSentiment.filter(article => article.sentiment === 'Positive');
+    accept_sentimentnews.push(accept_sentiment);
+
+    res.json(articlesWithSentiment);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+// const accept_sentiment = articlesWithSentiment.article.map(article =>{
+//   if(article.sentiment == 'positive'){
+//     return {
+//       title: article.title,
+//       description: article.description,
+//       url: article.url,
+//       image: article.image,
+//       sentiment: article.sentiment,
+//     };
+//   }
+
+// })
+
+app.get('/api/sent.accept-news', (req, res) => {
+  console.log('Request received at /api/sent.accept-news'); 
+  res.json(accept_sentimentnews);
+});
+
+
 app.post('/api/accept-news', (req, res) => {
   const acceptedArticle = req.body;
 
   if (acceptedArticle) {
-    // Handle the accepted article as needed
+    // Perform sentiment analysis on the accepted article title
+    const sentiment = performSentimentAnalysis(acceptedArticle.title);
+
+    // Add sentiment to the accepted article
+    acceptedArticle.sentiment = sentiment;
+
     console.log('Accepted News:', acceptedArticle);
     acceptedNews.push(acceptedArticle);
     res.status(200).json({ message: 'News accepted successfully' });
@@ -48,7 +87,8 @@ app.post('/api/accept-news', (req, res) => {
   }
 });
 
-app.get('/api/accept-news',(req,res)=>{
+app.get('/api/accept-news', async (req, res) => {
+
   res.json(acceptedNews);
 });
 
