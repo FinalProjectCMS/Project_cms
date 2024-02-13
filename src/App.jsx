@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react'
-
+import Weather from './components/Weather';
 function App() {
   const[news,setNews] = useState([]);
   const[loading,setLoading] = useState(true);
