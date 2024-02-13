@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const Sentiment = require('sentiment');
+const {google} = require('googleapis');
 const app = express();
 const port = 3000;
 const cors = require('cors');
@@ -11,6 +12,13 @@ const apiKey = '2c979581b679b06c3cb05f0f114316ce';
 const gnewsApiUrl = 'https://gnews.io/api/v4/top-headlines';
 const weatherApiKey = '2aa4b1935c08494d8c6151035231712';
 const weatherApiUrl = 'http://api.weatherapi.com/v1/current.json';
+const yt_key = 'AIzaSyCvsWwoJ00PbcGoGn1E10w8G59LfnzwVwc';
+
+const youtube = google.youtube({
+  version: 'v3',
+  auth: yt_key
+});
+
 let acceptedNews = [];
 let accept_sentimentnews = [];
 function performSentimentAnalysis(text) {
@@ -111,6 +119,21 @@ app.get('/api/weather', async (req, res) => {
   }
 });
 
+app.get('/trending-videos/:regionCode', async (req, res) => {
+  try {
+    const { regionCode } = req.params;
+    const response = await youtube.videos.list({
+      part: 'snippet',
+      chart: 'mostPopular',
+      regionCode: regionCode,
+      maxResults: 10 // Adjust as needed
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching trending videos:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.listen(port, () => {
   
