@@ -9,7 +9,8 @@ app.use(express.json());
 
 const apiKey = '2c979581b679b06c3cb05f0f114316ce';
 const gnewsApiUrl = 'https://gnews.io/api/v4/top-headlines';
-
+const weatherApiKey = '2aa4b1935c08494d8c6151035231712';
+const weatherApiUrl = 'http://api.weatherapi.com/v1/current.json';
 let acceptedNews = [];
 let accept_sentimentnews = [];
 function performSentimentAnalysis(text) {
@@ -92,6 +93,26 @@ app.get('/api/accept-news', async (req, res) => {
   res.json(acceptedNews);
 });
 
+
+app.get('/api/weather', async (req, res) => {
+  try {
+    const response = await axios.get(weatherApiUrl, {
+      params: {
+        key: weatherApiKey,
+        q: 'Thiruvananthapuram',
+        aqi:'yes',
+      },
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 app.listen(port, () => {
+  
   console.log(`Server is running at http://localhost:${port}`);
 });

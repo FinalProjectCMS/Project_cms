@@ -58,7 +58,7 @@ function App() {
             <td>
             {article.title}
             <p>{article.description}</p>
-            <p>{article.sentiment}</p>
+            <p>Sentiment: {article.sentiment}</p>
             </td>
           
           <td>
@@ -68,6 +68,7 @@ function App() {
   ))}
   
         </table>
+        
       )}
 
     </>
