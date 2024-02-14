@@ -9,7 +9,8 @@ const AcceptSentimentNewsPage = () => {
       try {
         const response = await fetch('http://localhost:3000/api/sent.accept-news');
         const data = await response.json();
-        setAcceptSentimentNews(data);
+        const flattendata = data.flat();
+        setAcceptSentimentNews(flattendata);
       } catch (error) {
         console.error("Error Fetching accepted sentiment news", error.message);
       } finally {
@@ -28,8 +29,8 @@ const AcceptSentimentNewsPage = () => {
     <div>
       <h2>News with Positive Sentiment</h2>
       <ul>
-        {acceptSentimentNews.map(article => (
-          <li key={article.title}>
+        {acceptSentimentNews.map((article,index) => (
+          <li key={index}>
             <h4>{article.title}</h4>
             <p>{article.description}</p>
             {article.image && (
