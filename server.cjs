@@ -129,6 +129,7 @@ app.get('/trending-videos/:regionCode', async (req, res) => {
       maxResults: 10 // Adjust as needed
     });
     res.json(response.data);
+    console.log(response.data)
   } catch (error) {
     console.error('Error fetching trending videos:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
