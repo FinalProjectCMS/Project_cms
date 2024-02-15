@@ -14,7 +14,7 @@ const Video = () => {
         }
         const data = await response.json();
         
-        setVideo(data.items); // Update video state with data.items
+        setVideo(data.items); 
       } catch (error) {
         console.error("Error Fetching video", error.message);
         setError(error.message);
