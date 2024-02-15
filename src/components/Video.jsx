@@ -39,7 +39,7 @@ const Video = () => {
       {video.map((item, index) => (
         <div key={index}>
           <h2>{item.snippet.title}</h2>
-          <img src={item.snippet.thumbnails.default.url} alt="Thumbnail" />
+          <img src={item.snippet.thumbnails.default.url} alt="Thumbnail" width="400px" />
           <QRCode value={`https://www.youtube.com/watch?v=${video.id}`} />
         </div>
       ))}

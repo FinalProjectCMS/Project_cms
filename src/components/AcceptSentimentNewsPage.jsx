@@ -7,7 +7,7 @@ const AcceptSentimentNewsPage = () => {
   useEffect(() => {
     async function fetchAcceptSentimentNews() {
       try {
-        const response = await fetch('http://localhost:3000/api/sent.accept-news');
+        const response = await fetch('http://localhost:3000/api/accept-news');
         const data = await response.json();
         const flattendata = data.flat();
         setAcceptSentimentNews(flattendata);
