@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const Sentiment = require('sentiment');
 const {google} = require('googleapis');
+const mongoose = require('mongoose');
 const app = express();
 const port = 3000;
 const cors = require('cors');
@@ -18,6 +19,10 @@ const youtube = google.youtube({
   version: 'v3',
   auth: yt_key
 });
+
+mongoose.connect('mongodb://localhost:27017/UrbanPulse');
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 let acceptedNews = [];
 let accept_sentimentnews = [];
