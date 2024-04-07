@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-
+import axios from 'axios';
 const AcceptSentimentNewsPage = () => {
   const [acceptSentimentNews, setAcceptSentimentNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState('');
+
 
   useEffect(() => {
     async function fetchAcceptSentimentNews() {
       try {
-        const response = await fetch('http://localhost:3000/api/accept-news');
+        const response = await fetch('http://localhost:3000/api/sent.accept-news');
         const data = await response.json();
         const flattendata = data.flat();
         setAcceptSentimentNews(flattendata);
@@ -17,8 +19,19 @@ const AcceptSentimentNewsPage = () => {
         setLoading(false);
       }
     }
+    
+    async function runPythonProgram() {
+      try {
+        const response = await axios.post('http://localhost:3000/run-python-program', { argument: 'your_argument' });
+        setResult(response.data.result);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
 
+    runPythonProgram();
     fetchAcceptSentimentNews();
+
   }, []);
 
   if (loading) {

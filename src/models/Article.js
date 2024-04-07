@@ -8,4 +8,5 @@ const articleSchema = new mongoose.Schema({
     sentiment: String
 });
 
-module.exports = mongoose.model('Article', this.articleSchema);
+Article = mongoose.model('Article', this.articleSchema);
+module.exports = Article;

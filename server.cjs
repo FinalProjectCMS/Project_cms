@@ -3,6 +3,7 @@ const axios = require('axios');
 const Sentiment = require('sentiment');
 const {google} = require('googleapis');
 const mongoose = require('mongoose');
+const { spawn } = require('child_process');
 const app = express();
 const port = 3000;
 const cors = require('cors');
@@ -31,6 +32,21 @@ function performSentimentAnalysis(text) {
   const result = sentiment.analyze(text);
   return result.score > 0 ? 'Positive' : result.score < 0 ? 'Negative' : 'Neutral';
 }
+
+// python program run
+
+app.post('/run-python-program',(req,res) =>{
+  console.log('Starting Python script execution');
+  const pythonProcess = spawn('python',['src/assets/firstphaseproject.py',req.body.argument]);
+  let output = '';
+  pythonProcess.stdout.on('data', (data) => {
+    output += data.toString();
+  });
+  pythonProcess.on('close', (code) => {
+    console.log(`Python script exited with code ${code}`);
+    res.json({ result: output });
+  });
+});
 
 app.get('/api/news', async (req, res) => {
   try {
@@ -137,6 +153,28 @@ app.get('/trending-videos/:regionCode', async (req, res) => {
     console.log(response.data)
   } catch (error) {
     console.error('Error fetching trending videos:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/api/positive-quotes', async (req, res) => {
+  try {
+    const quotesResponse = await axios.get('https://type.fit/api/quotes');
+    const quotesData = quotesResponse.data;
+
+    const positiveQuotes = quotesData.filter(quote => {
+      // Some quotes might not have an author or text.
+      if (!quote.text) return false;
+      const sentiment = performSentimentAnalysis(quote.text);
+      return sentiment === 'Positive';
+    }).map(quote => ({
+      text: quote.text,
+      author: quote.author || 'Unknown'
+    }));
+
+    res.json(positiveQuotes);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
