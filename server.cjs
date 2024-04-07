@@ -36,7 +36,7 @@ function performSentimentAnalysis(text) {
 // python program run
 
 app.post('/run-python-program',(req,res) =>{
-  console.log('Starting Python script execution');
+  
   const pythonProcess = spawn('python',['src/assets/firstphaseproject.py',req.body.argument]);
   let output = '';
   pythonProcess.stdout.on('data', (data) => {
@@ -46,6 +46,12 @@ app.post('/run-python-program',(req,res) =>{
     console.log(`Python script exited with code ${code}`);
     res.json({ result: output });
   });
+});
+
+app.post('/api/sent.accept-news', (req, res) => {
+  console.log('Request received at /api/sent.accept-news'); 
+  accept_sentimentnews = req.body;
+  res.json({ message: 'Accepted sentiment news received successfully' });
 });
 
 app.get('/api/news', async (req, res) => {
@@ -71,7 +77,7 @@ app.get('/api/news', async (req, res) => {
     });
 
     const accept_sentiment = articlesWithSentiment.filter(article => article.sentiment === 'Positive');
-    accept_sentimentnews.push(accept_sentiment);
+    // accept_sentimentnews.push(accept_sentiment);
 
     res.json(articlesWithSentiment);
   } catch (error) {

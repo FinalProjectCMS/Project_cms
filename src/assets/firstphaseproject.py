@@ -42,7 +42,9 @@ for myid, scores in res.items():
 
 
 df['Category'] = categories
-json_data = df.to_json(orient='records')
+positive_news_df = df[df['Category'] == 'accept']
+json_data = positive_news_df.to_json(orient='records')
+json_obj = json.loads(json_data)
 url2 = 'http://localhost:3000/api/sent.accept-news'
-response = requests.post(url2, json=json_data)
+response = requests.post(url2, json=json_obj)
 print(response.text)
