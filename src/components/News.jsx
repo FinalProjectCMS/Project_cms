@@ -22,7 +22,7 @@ const News = () => {
 
   const handleAcceptClick = async (article) =>{
     try{
-      const response = await fetch('http://localhost:3000/api/accept-news',{
+      const response = await fetch('http://localhost:3000/api/sent.accept-news',{
         method:'POST',
         headers:{
           'Content-Type':'application/json',
