@@ -5,7 +5,7 @@ const acceptedArticleSchema = new mongoose.Schema({
     description: String,
     url: String,
     image: String,
-    sentiment: String
+    category: String
 });
 
 module.exports = mongoose.model('AcceptedArticle', acceptedArticleSchema);

@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from pymongo import MongoClient
 import nltk
 import json
 import csv
@@ -19,7 +20,7 @@ response = requests.get(url)
 data = response.json()
 df = pd.DataFrame(data)
 
-df = df.drop('sentiment', axis=1)
+#df = df.drop('sentiment', axis=1)
 
 nltk.download('vader_lexicon')
 sia = SentimentIntensityAnalyzer()
