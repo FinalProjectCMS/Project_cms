@@ -8,7 +8,7 @@ const News = () => {
   useEffect(()=>{
     async function fetchNews(){
       try{
-        const response = await fetch('http://localhost:3000/api/news');
+        const response = await fetch('http://localhost:3000/api/mongo-news');
         const data = await response.json();
         setNews(data);
       } catch(error){

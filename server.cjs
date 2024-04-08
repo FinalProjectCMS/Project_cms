@@ -55,6 +55,34 @@ app.post('/api/clear-database', async (req, res) => {
   }
 });
 
+//mongo news
+app.get('/api/mongo-news', async (req, res) => {
+  try {
+    const articles = await Article.find(); 
+    res.json(articles);
+  } catch (error) {
+    console.error("Error fetching news from MongoDB:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+//mongo weather
+
+app.get('/api/mongo-weather', async (req, res) => {
+  try {
+    // Retrieve the latest weather data document
+    const latestWeather = await Weather.findOne().sort({ createdAt: -1 });
+    if (latestWeather) {
+      res.json(latestWeather);
+    } else {
+      res.status(404).json({ message: 'No weather data found' });
+    }
+  } catch (error) {
+    console.error("Error fetching weather from MongoDB:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // python program run
 
 app.post('/run-python-program',(req,res) =>{
@@ -149,7 +177,8 @@ app.get('/api/weather', async (req, res) => {
         aqi:'yes',
       },
     });
-
+    const weatherData = new Weather(response.data);
+    await weatherData.save();
     res.json(response.data);
   } catch (error) {
     console.error(error);
