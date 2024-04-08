@@ -32,15 +32,15 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 let acceptedNews = [];
 let accept_sentimentnews = [];
-// function performSentimentAnalysis(text) {
-//   const sentiment = new Sentiment();
-//   const result = sentiment.analyze(text);
-//   return result.score > 0 ? 'Positive' : result.score < 0 ? 'Negative' : 'Neutral';
-// }
+function performSentimentAnalysis(text) {
+  const sentiment = new Sentiment();
+  const result = sentiment.analyze(text);
+  return result.score > 0 ? 'Positive' : result.score < 0 ? 'Negative' : 'Neutral';
+}
 
 app.post('/api/clear-database', async (req, res) => {
   try {
-    // Assuming you're using Mongoose models, you can directly call deleteMany() on each model
+    // Clear the database first
     await Promise.all([
       AcceptedArticle.deleteMany({}),
       Article.deleteMany({}),
@@ -48,12 +48,61 @@ app.post('/api/clear-database', async (req, res) => {
       Video.deleteMany({}),
       PositiveQuote.deleteMany({})
     ]);
-    res.status(200).send('Database cleared successfully');
+
+    // Fetch  and save to the database
+    await fetchAndSaveNews();
+
+    await fetchAndSaveWeather();
+    await fetchAndSaveVideos("IN");
+    await fetchAndSaveQuotes();
+    
+    // Run the Python script
+    const pythonProcess = spawn('python', ['src/assets/pythonnews.py']);
+    pythonProcess.stdout.on('data', (data) => {
+      console.log(data.toString());
+    });
+
+    pythonProcess.on('close', (code) => {
+      console.log(`Python script exited with code ${code}`);
+      // Final response after all operations
+      res.status(200).send('Database cleared, news fetched and processed successfully.');
+    });
+
+
   } catch (error) {
-    console.error('Failed to clear database:', error);
+    console.error('Failed to clear database and fetch news:', error);
     res.status(500).send('Internal server error');
   }
 });
+
+//fetch and save news
+
+async function fetchAndSaveNews() {
+  try{
+    const newsResponse = await axios.get(gnewsApiUrl, {
+      params: {
+        token: apiKey,
+        country: 'in',
+        q: 'Kerala',
+        lang: 'en',
+      },
+    });
+
+    await Promise.all(newsResponse.data.articles.map(async article => {
+      const newArticle = new Article({
+        title: article.title,
+        description: article.description,
+        url: article.url,
+        image: article.image
+      });
+      console.log("Saving news to db");
+      await newArticle.save();
+    }));
+
+  } catch (error) {
+    console.error("Error fetching and saving news",error);
+  }
+}
 
 //mongo news
 app.get('/api/mongo-news', async (req, res) => {
@@ -66,8 +115,91 @@ app.get('/api/mongo-news', async (req, res) => {
   }
 });
 
-//mongo weather
+// fetch and save weather
 
+async function fetchAndSaveWeather() {
+  try {
+    const weatherResponse = await axios.get(weatherApiUrl, {
+      params: {
+        key: weatherApiKey,
+        q: 'Thiruvananthapuram',
+        aqi: 'yes',
+      },
+    });
+
+
+    const weatherData = new Weather(weatherResponse.data);
+    console.log("Saving weather to db");
+    await weatherData.save();
+
+  } catch (error) {
+    console.error("Error fetching and saving weather",error);
+  }
+}
+
+
+//fetch video
+
+async function fetchAndSaveVideos(regionCode) {
+  try {
+    // Fetch trending videos using the YouTube Data API
+    const response = await youtube.videos.list({
+      part: 'snippet',
+      chart: 'mostPopular',
+      regionCode: regionCode,
+      maxResults: 10, // Adjust as needed
+    });
+
+    // Transform the API response to match the MongoDB schema
+    const videosForMongo = response.data.items.map(item => ({
+      kind: item.kind,
+      etag: item.etag,
+      id: item.id,
+      snippet: {
+        publishedAt: item.snippet.publishedAt,
+        channelId: item.snippet.channelId,
+        title: item.snippet.title,
+        description: item.snippet.description,
+        thumbnails: {
+          default: item.snippet.thumbnails.default,
+          medium: item.snippet.thumbnails.medium,
+          high: item.snippet.thumbnails.high,
+          standard: item.snippet.thumbnails.standard || {}, // Handling potential absence of some thumbnail sizes
+          maxres: item.snippet.thumbnails.maxres || {},
+        },
+        channelTitle: item.snippet.channelTitle,
+        tags: item.snippet.tags || [], // Handling potential absence of tags
+        categoryId: item.snippet.categoryId,
+        liveBroadcastContent: item.snippet.liveBroadcastContent,
+        defaultLanguage: item.snippet.defaultLanguage,
+        localized: item.snippet.localized || { title: "", description: "" }, // Default to empty if not provided
+        defaultAudioLanguage: item.snippet.defaultAudioLanguage,
+      },
+    }));
+
+    // Save the transformed video data to MongoDB
+    await Video.insertMany(videosForMongo);
+    console.log("inserted videos to DB");
+
+    console.log(`Saved ${videosForMongo.length} videos to the database for region: ${regionCode}`);
+  } catch (error) {
+    console.error(`Error fetching and saving trending videos for region ${regionCode}:`, error.message);
+  }
+}
+
+//mongovideo
+
+app.get('/api/mongo-videos', async (req, res) => {
+  try {
+    const videos = await Video.find(); // Fetch all videos from MongoDB
+    res.json(videos); // Send videos back in response
+  } catch (error) {
+    console.error("Error fetching videos from database:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+//mongo weather
 app.get('/api/mongo-weather', async (req, res) => {
   try {
     // Retrieve the latest weather data document
@@ -83,22 +215,8 @@ app.get('/api/mongo-weather', async (req, res) => {
   }
 });
 
-// python program run
 
-app.post('/run-python-program',(req,res) =>{
-  
-  const pythonProcess = spawn('python',['src/assets/pythonnews.py']);
-  let output = '';
-  pythonProcess.stdout.on('data', (data) => {
-    output += data.toString();
-  });
-  pythonProcess.stderr.on('close', (code) => {
-    console.log(`Python script exited with code ${code}`);
-    res.json({ result: output });
-  });
-});
-
-
+//accepting news into DB
 app.post('/api/sent.accept-news', async (req, res) => {
   try {
     const accept_sentimentnews = req.body;
@@ -114,102 +232,25 @@ app.post('/api/sent.accept-news', async (req, res) => {
   }
 });
 
-
-app.get('/api/news', async (req, res) => {
+//mongo-accept-news
+app.get('/api/mongo-accept-news', async (req, res) => {
   try {
-    const response = await axios.get(gnewsApiUrl, {
-      params: {
-        token: apiKey,
-        country: 'in',
-        q: 'Kerala',
-        lang: 'en',
-      },
-    });
-
-    await Promise.all(response.data.articles.map(async article => {
-      const newArticle = new Article({
-          title: article.title,
-          description: article.description,
-          url: article.url,
-          image: article.image
-      });
-      await newArticle.save();
-    }));
-
-    res.json(response.data.articles);
+    const acceptedArticles = await AcceptedArticle.find(); // Fetch all documents from acceptedarticle collection
+    res.json(acceptedArticles); // Send them back in response
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching accepted sentiment news from database:", error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+//fetchandsavequotes
 
-app.get('/api/sent.accept-news', (req, res) => {
-  console.log('Request received at /api/sent.accept-news'); 
-  res.json(accept_sentimentnews);
-});
-
-
-app.post('/api/accept-news', (req, res) => {
-  const acceptedArticle = req.body;
-
-  if (acceptedArticle) {
-    console.log('Accepted News:', acceptedArticle);
-    acceptedNews.push(acceptedArticle);
-    res.status(200).json({ message: 'News accepted successfully' });
-  } else {
-    res.status(400).json({ error: 'Invalid request. No article data received.' });
-  }
-});
-
-app.get('/api/accept-news', async (req, res) => {
-
-  res.json(acceptedNews);
-});
-
-
-app.get('/api/weather', async (req, res) => {
-  try {
-    const response = await axios.get(weatherApiUrl, {
-      params: {
-        key: weatherApiKey,
-        q: 'Thiruvananthapuram',
-        aqi:'yes',
-      },
-    });
-    const weatherData = new Weather(response.data);
-    await weatherData.save();
-    res.json(response.data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.get('/trending-videos/:regionCode', async (req, res) => {
-  try {
-    const { regionCode } = req.params;
-    const response = await youtube.videos.list({
-      part: 'snippet',
-      chart: 'mostPopular',
-      regionCode: regionCode,
-      maxResults: 10 // Adjust as needed
-    });
-    res.json(response.data);
-    console.log(response.data)
-  } catch (error) {
-    console.error('Error fetching trending videos:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.get('/api/positive-quotes', async (req, res) => {
+async function fetchAndSaveQuotes() {
   try {
     const quotesResponse = await axios.get('https://type.fit/api/quotes');
     const quotesData = quotesResponse.data;
 
     const positiveQuotes = quotesData.filter(quote => {
-      // Some quotes might not have an author or text.
       if (!quote.text) return false;
       const sentiment = performSentimentAnalysis(quote.text);
       return sentiment === 'Positive';
@@ -218,9 +259,23 @@ app.get('/api/positive-quotes', async (req, res) => {
       author: quote.author || 'Unknown'
     }));
 
-    res.json(positiveQuotes);
+    // Save filtered positive quotes to MongoDB
+    await PositiveQuote.insertMany(positiveQuotes);
+    console.log(`${positiveQuotes.length} positive quotes saved to database.`);
+
   } catch (error) {
-    console.error(error);
+    console.error("Error in fetchAndSavePositiveQuotes:", error);
+    throw error; // Re-throw the error to be handled by the caller
+  }
+}
+
+//mongo-quote
+app.get('/api/mongo-quotes', async (req, res) => {
+  try {
+    const quotes = await PositiveQuote.find(); // Fetch all positive quotes from MongoDB
+    res.json(quotes); // Send them back in response
+  } catch (error) {
+    console.error("Error fetching positive quotes from database:", error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

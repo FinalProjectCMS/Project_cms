@@ -9,7 +9,7 @@ const AcceptSentimentNewsPage = () => {
   useEffect(() => {
     async function fetchAcceptSentimentNews() {
       try {
-        const response = await fetch('http://localhost:3000/api/sent.accept-news');
+        const response = await fetch('http://localhost:3000/api/mongo-accept-news');
         const data = await response.json();
         const flattendata = data.flat();
         setAcceptSentimentNews(flattendata);
@@ -20,16 +20,6 @@ const AcceptSentimentNewsPage = () => {
       }
     }
     
-    async function runPythonProgram() {
-      try {
-        const response = await axios.post('http://localhost:3000/run-python-program', { argument: 'your_argument' });
-        setResult(response.data.result);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-
-    runPythonProgram();
     fetchAcceptSentimentNews();
 
   }, []);

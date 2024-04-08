@@ -8,7 +8,7 @@ const Quotes = () => {
     useEffect(() => {
         async function fetchPositiveQuotes() {
         try {
-            const response = await fetch('http://localhost:3000/api/positive-quotes');
+            const response = await fetch('http://localhost:3000/api/mongo-quotes');
             const data = await response.json();
             setPositiveQuotes(data);
         } catch (error) {

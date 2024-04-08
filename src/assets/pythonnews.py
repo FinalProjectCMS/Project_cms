@@ -20,7 +20,7 @@ articles_cursor = articles_collection.find({})
 articles = list(articles_cursor)
 df = pd.DataFrame(articles)
 
-print(df)
+#print(df)
 nltk.download('vader_lexicon')
 sia = SentimentIntensityAnalyzer()
 

@@ -8,7 +8,7 @@ const Video = () => {
   useEffect(() => {
     async function fetchVideo() {
       try {
-        const response = await fetch('http://localhost:3000/trending-videos/IN');
+        const response = await fetch('http://localhost:3000//api/mongo-videos');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -39,7 +39,7 @@ const Video = () => {
       {video.map((item, index) => (
         <div key={index}>
           <h2>{item.snippet.title}</h2>
-          <img src={item.snippet.thumbnails.default.url} alt="Thumbnail" width="400px" />
+          <img src={item.snippet.thumbnails.high.url} alt="Thumbnail" width="400px" />
           <QRCode value={`https://www.youtube.com/watch?v=${video.id}`} />
         </div>
       ))}
