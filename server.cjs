@@ -236,6 +236,7 @@ app.post('/api/sent.accept-news', async (req, res) => {
 app.get('/api/mongo-accept-news', async (req, res) => {
   try {
     const acceptedArticles = await AcceptedArticle.find(); // Fetch all documents from acceptedarticle collection
+      // console.log(acceptedArticles);
     res.json(acceptedArticles); // Send them back in response
   } catch (error) {
     console.error("Error fetching accepted sentiment news from database:", error);

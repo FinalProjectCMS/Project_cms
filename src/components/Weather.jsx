@@ -9,7 +9,7 @@ const Weather = () => {
             try {
                 const response = await fetch('http://localhost:3000/api/mongo-weather');
                 const data = await response.json();
-                console.log(await response.text());
+                // console.log(await response.text());
                 console.log(data.current);
                 setWeather(data); // Assuming data is structured as per your API endpoint
             } catch (error) {

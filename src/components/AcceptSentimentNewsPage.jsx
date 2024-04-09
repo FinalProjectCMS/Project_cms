@@ -3,7 +3,8 @@ import axios from 'axios';
 const AcceptSentimentNewsPage = () => {
   const [acceptSentimentNews, setAcceptSentimentNews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [result, setResult] = useState('');
+  const [currentIndex,setCurrentIndex] = useState(0);
+
 
 
   useEffect(() => {
@@ -24,6 +25,8 @@ const AcceptSentimentNewsPage = () => {
 
   }, []);
 
+  
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -31,7 +34,7 @@ const AcceptSentimentNewsPage = () => {
   return (
     <div>
       <h2>News with Positive Sentiment</h2>
-      <ul>
+      {/* <ul>
         {acceptSentimentNews.map((article,index) => (
           <li key={index}>
             <h4>{article.title}</h4>
@@ -41,7 +44,8 @@ const AcceptSentimentNewsPage = () => {
             )}
           </li>
         ))}
-      </ul>
+      </ul> */}
+
     </div>
   );
 };

@@ -1,7 +1,6 @@
-
 const mongoose = require('mongoose');
 
-const videoSchema = new mongoose.Schema({
+const VideoSchema = new mongoose.Schema({
   kind: String,
   etag: String,
   id: String,
@@ -47,7 +46,8 @@ const videoSchema = new mongoose.Schema({
       description: String
     },
     defaultAudioLanguage: String
-  }
-});
+  },
+  __v: { type: Number, select: false } // __v is automatically added by MongoDB, select: false means it won't be returned in queries by default
+}); // Optionally add timestamps to keep track of creation and modification times
 
-module.exports = mongoose.model('Video', videoSchema);
+module.exports = mongoose.model('Video', VideoSchema);
