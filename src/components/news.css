@@ -1,0 +1,29 @@
+
+.news-container {
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    background-color:#1E1E1E; 
+    color: #E6372C;
+  }
+
+.newsimg{
+    width: 60vw; /* Prevent the image from being too wide */
+    border-radius: 20px; /* Rounded corners */
+    display: block; /* Change display to block to center the image using margins */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+h2{
+    max-width: 60vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+p {
+    max-width: 58vw;
+    margin-left: auto;
+    margin-right: auto;
+    color: #D4D4D4;
+  
+}

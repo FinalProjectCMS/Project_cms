@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import './news.css';
 const AcceptSentimentNewsPage = () => {
   const [acceptSentimentNews, setAcceptSentimentNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,26 +25,34 @@ const AcceptSentimentNewsPage = () => {
 
   }, []);
 
-  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCurrentIndex((currentIndex+1)%acceptSentimentNews.length);
+    }, 5000);
+    return () => clearTimeout(timer);
+  },[currentIndex,acceptSentimentNews]);
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
+  const article = acceptSentimentNews[currentIndex];
+
   return (
-    <div>
-      <h2>News with Positive Sentiment</h2>
-      {/* <ul>
-        {acceptSentimentNews.map((article,index) => (
-          <li key={index}>
-            <h4>{article.title}</h4>
+    <div className='news-container'>
+      <h2>NEWS</h2>
+      {article ? (
+        <ul>
+          <li>
+            
+            <img className='newsimg' src ={article.image} alt={article.title}></img>
+            <h2>{article.title}</h2>
             <p>{article.description}</p>
-            {article.image && (
-              <img src={article.image} alt={article.title} />
-            )}
           </li>
-        ))}
-      </ul> */}
+        </ul>
+      ):(
+        <p>no articles</p>
+      )}
 
     </div>
   );
