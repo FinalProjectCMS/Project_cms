@@ -44,7 +44,6 @@ const AcceptSentimentNewsPage = () => {
       {article ? (
         <ul>
           <li>
-            
             <img className='newsimg' src ={article.image} alt={article.title}></img>
             <h2>{article.title}</h2>
             <p>{article.description}</p>
