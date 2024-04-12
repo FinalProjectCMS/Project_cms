@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import Quotes from './Quotes';
 
 const Weather = () => {
     const [weather, setWeather] = useState(null);
@@ -27,7 +28,9 @@ const Weather = () => {
                     <p>Temperature: {weather.current.temp_c}°C</p>
                     <p>Condition: {weather.current.condition.text}</p>
                     <img src={`https:${weather.current.condition.icon}`} alt="Weather Icon" />
+                    <Quotes />
                 </>
+                
             ) : (
                 "Loading weather data..."
             )}

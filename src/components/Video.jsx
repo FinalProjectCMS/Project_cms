@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode.react';
+import './video.css';
 const Video = () => {
   const [video, setVideo] = useState([]); // Initialize video as an empty array
   const [loading, setLoading] = useState(true);

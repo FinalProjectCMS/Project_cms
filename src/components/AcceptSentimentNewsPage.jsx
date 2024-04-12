@@ -40,7 +40,7 @@ const AcceptSentimentNewsPage = () => {
 
   return (
     <div className='news-container'>
-      <h2>NEWS</h2>
+      <h1>NEWS</h1>
       {article ? (
         <ul>
           <li>
