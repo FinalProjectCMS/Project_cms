@@ -36,23 +36,10 @@ const Video = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
   const video_s = video[currentIndex];
   const videourl = `https://www.youtube.com/watch?v=${video_s.id}`;
-  // console.log(video_s);
   return (
     <div className='video-page'>
-      {/* <h1>Trending Videos</h1>
-      {video.map((item, index) => (
-        <div key={index}>
-          <h2>{item.snippet.localized.title}</h2>
-          <img src={item.snippet.thumbnails.maxres.url} alt="Thumbnail" width="400px" />
-          <QRCode value={`https://www.youtube.com/watch?v=${video.id}`} />
-        </div>
-      ))} */}
       
       { video_s ? (
         <div className='video-container'>

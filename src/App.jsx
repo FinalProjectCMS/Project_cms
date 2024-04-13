@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
       <Header /> 
-       {/* <TimedNav /> */}
+       <TimedNav />
       <Routes>
         <Route path = '/' element = {<AcceptSentimentNewsPage />}/>
         <Route path ='/acc-news' element = {<AcceptSentimentNewsPage />} />

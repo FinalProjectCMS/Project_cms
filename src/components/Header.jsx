@@ -36,7 +36,7 @@ const Header = () => {
                     <>
                         <img src={`http:${weather.current.condition.icon}`} alt="Weather Icon" />
                         <span>{weather.current.temp_c} °C </span>
-                        <span>{weather.current.condition.text}</span>
+                        <span className='condition-text'>{weather.current.condition.text}</span>
                     </>
                 )}
         </div>
