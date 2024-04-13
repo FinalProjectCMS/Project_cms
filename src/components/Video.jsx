@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import QRCode from 'qrcode.react';
+import QRCode from 'react-qr-code';
 import './video.css';
 const Video = () => {
   const [video, setVideo] = useState([]); // Initialize video as an empty array
@@ -29,7 +29,7 @@ const Video = () => {
   useEffect(() =>{
     const timer = setTimeout(() =>{
       setCurrentIndex((currentIndex +1)%video.length)
-    },15000);
+    },600000);
     return () =>clearTimeout(timer);
   },[currentIndex,video]);
 
@@ -41,10 +41,10 @@ const Video = () => {
   //   return <div>Error: {error}</div>;
   // }
   const video_s = video[currentIndex];
-  const videourl = 'https://www.youtube.com/watch?v=${video_s.id}';
+  const videourl = `https://www.youtube.com/watch?v=${video_s.id}`;
   // console.log(video_s);
   return (
-    <div>
+    <div className='video-page'>
       {/* <h1>Trending Videos</h1>
       {video.map((item, index) => (
         <div key={index}>
@@ -53,17 +53,17 @@ const Video = () => {
           <QRCode value={`https://www.youtube.com/watch?v=${video.id}`} />
         </div>
       ))} */}
-      <h1>Video</h1>
+      
       { video_s ? (
-        <div>
-          <ul>
-            <li>
-            <img src={video_s.snippet.thumbnails.maxres.url} alt="Thumbnail" width="400px" />
-            <h2>{video_s.snippet.localized.title}</h2>
-            <QRCode value={`https://www.youtube.com/watch?v=${video_s.id}`} />
-            <a href='videourl'>CLICK HERE</a>
-            </li>
-          </ul>
+        <div className='video-container'>
+          <h1 className='page-title'>Video</h1>
+          <div className="videotitle">
+          <a href={videourl}>
+            <QRCode className='QR' value={videourl} />
+          </a>
+          <h2>{video_s.snippet.localized.title}</h2>
+          </div>
+          <img className='videoimg' src={video_s.snippet.thumbnails.maxres.url} alt="Thumbnail" width="400px" />
         </div>
       ):(
         <p>no video</p>

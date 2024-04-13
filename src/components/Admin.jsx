@@ -4,7 +4,7 @@ import axios from 'axios';
 const Admin = () => {
   const handleAdminButtonClick = async () => {
     try {
-      // Step 1: Clear the database
+      //  Clear the database
       await axios.post('http://localhost:3000/api/clear-database');
       
       alert('Database has been reset and repopulated successfully!');

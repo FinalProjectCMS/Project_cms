@@ -1,0 +1,36 @@
+.video-page{
+    background-color: #1E1E1E;
+    height: 100vh;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: #1DCCFD;
+}
+.video-container{
+
+    width: 100vw;
+    text-align: center;
+}
+.videotitle{
+    display: flex;
+    align-items: center;
+    max-width: 42vw;
+    margin: 0 auto;
+    text-align: justify;
+}
+.page-title{
+    margin-bottom: -20px;
+}
+.videoimg{
+
+    width: 40vw;
+    border-radius: 20px;
+    display: block;
+    margin: 0 auto;
+
+}
+.QR{
+    margin-right: 20px;
+    width: 8vw;
+}

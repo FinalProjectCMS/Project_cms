@@ -10,12 +10,15 @@ import Admin from './components/Admin';
 import './App.css'
 import LoadingScreen from './components/LoadingScreen';
 import Restaurant from './components/Restaurant';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 function App() {
 
   return (
     <Router>
-      {/* <TimedNav /> */}
+      <Header /> 
+       {/* <TimedNav /> */}
       <Routes>
         <Route path = '/' element = {<AcceptSentimentNewsPage />}/>
         <Route path ='/acc-news' element = {<AcceptSentimentNewsPage />} />
@@ -25,9 +28,14 @@ function App() {
         <Route path='/quote' element = {<Quotes/>}/>
         <Route path='/Admin' element = {<Admin/>}/>
         <Route path='/Loading' element = {<LoadingScreen/>}/>
-        <Route path='/Resto' element = {<Restaurant/>}/>
+        <Route path='/Resto' element = {<Restaurant/>}/>        
+        {/* <Route path='/footer' element = {<Footer/>}/>        
+        <Route path='/header' element = {<Header/>}/>         */}
+
       </Routes>
+      <Footer />
     </Router>
+    
   );
 }
 

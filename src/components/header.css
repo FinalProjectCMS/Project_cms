@@ -1,0 +1,29 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999; 
+}
+
+.weather-info {
+    display: flex;
+    align-items: center;
+}
+
+.weather-info img {
+    width: 32px; 
+    height: 32px; 
+    margin-right: 10px;
+}
+
+.header-time {
+    font-size: 30px; 
+    font-weight: bold; 
+}

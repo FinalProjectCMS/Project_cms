@@ -1,0 +1,23 @@
+.positivequote {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw; 
+}
+
+.positivequote h2 {
+    font-size: 24px; 
+    margin-bottom: 10px;
+}
+
+.positivequote h3 {
+    font-size: 20px; 
+}
+.positivequote h1{
+    margin-bottom: 10px;
+    word-wrap: break-word; 
+    color: #DCFF03;
+
+}

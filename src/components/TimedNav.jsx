@@ -7,7 +7,7 @@ const TimedNav = () => {
     const location = useLocation();
     let currentIndex = useRef(0);
     useEffect(() =>{
-      const paths = ['/acc-news','/video','/weather'];
+      const paths = ['/acc-news','/video','/quote','/resto'];
       
       const handleNavigation = () => {
         setLoading(true);
@@ -19,8 +19,8 @@ const TimedNav = () => {
         }, 1000);
       };
   
-      if (location.pathname !== '/newsAdmin') {
-        const intervalId = setInterval(handleNavigation, 5000);
+      if (location.pathname !== '/newsAdmin' && location.pathname !== '/Admin') {
+        const intervalId = setInterval(handleNavigation, 3000);
   
         return () => clearInterval(intervalId);
       }

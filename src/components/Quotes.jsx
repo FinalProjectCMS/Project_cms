@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import LoadingScreen from './LoadingScreen';
-
+import './quotes.css'
 const Quotes = () => {
     const [positiveQuotes, setPositiveQuotes] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -24,18 +24,13 @@ const Quotes = () => {
     if (loading) {
         return <LoadingScreen/>;
     }
-
+    const quote = positiveQuotes[1];
   return (
     <>
         <div className="positivequote">
-        <ul>
-        {positiveQuotes.map((quote, index) => (
-          <li key={index}>
-            <p>{quote.text} - <em>{quote.author ? quote.author : "Unknown"}</em></p>
-          </li>
-        ))}
-      </ul>
-
+          <h2>Today's Quote</h2>
+          <h1>{quote.text}</h1>
+          <h3>-{quote.author}</h3>
         </div>
     </>
 

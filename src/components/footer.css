@@ -1,0 +1,24 @@
+.footer{
+    /* max-height: 40px; */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 99vw;
+    padding: 10px 5px;
+    overflow: hidden;
+}
+
+.footer-logo{
+    max-width: 2vw
+}
+.footer-text{
+    
+    margin-left: 10vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,13 +1,15 @@
 
 .news-container {
-    width: 100vw;
+    width: 99vw;
+    height: 99vh;
     text-align: center;
     background-color:#1E1E1E; 
-    color: #E6372C;
+    color: #F47174 ;
   }
 
 .newsimg{
-    width: 40vw; /* Prevent the image from being too wide */
+    width: 35vw; /* Prevent the image from being too wide */
+    max-height: 40vh;
     border-radius: 20px; /* Rounded corners */
     display: block; /* Change display to block to center the image using margins */
     margin-left: auto;
