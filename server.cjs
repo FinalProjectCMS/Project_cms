@@ -119,6 +119,7 @@ app.get('/api/mongo-news', async (req, res) => {
 
 async function fetchAndSaveWeather() {
   try {
+    await Weather.deleteMany({})
     const weatherResponse = await axios.get(weatherApiUrl, {
       params: {
         key: weatherApiKey,
@@ -136,6 +137,8 @@ async function fetchAndSaveWeather() {
     console.error("Error fetching and saving weather",error);
   }
 }
+
+setInterval(fetchAndSaveWeather, 3800000);
 
 
 //fetch video

@@ -18,7 +18,7 @@ const Weather = () => {
             }
         }
         fetchWeather();
-    }, []);
+    }, [weather]);
 
     return (
         <>

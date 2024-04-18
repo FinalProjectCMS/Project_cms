@@ -1,4 +1,4 @@
-[
+export const RestoData = [
     {
         "Unnamed: 0":3183,
         "Rest_id":3183,

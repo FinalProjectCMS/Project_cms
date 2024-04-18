@@ -29,7 +29,7 @@ const Video = () => {
   useEffect(() =>{
     const timer = setTimeout(() =>{
       setCurrentIndex((currentIndex +1)%video.length)
-    },600000);
+    },5000);
     return () =>clearTimeout(timer);
   },[currentIndex,video]);
 

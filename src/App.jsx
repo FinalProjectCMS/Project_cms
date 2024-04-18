@@ -17,23 +17,27 @@ function App() {
 
   return (
     <Router>
-      <Header /> 
-       <TimedNav />
-      <Routes>
-        <Route path = '/' element = {<AcceptSentimentNewsPage />}/>
-        <Route path ='/acc-news' element = {<AcceptSentimentNewsPage />} />
-        <Route path = '/newsAdmin' element = {<News />} />
-        <Route path ='/video' element = {<Video />}/>
-        <Route path ='/weather' element = {<Weather />} />
-        <Route path='/quote' element = {<Quotes/>}/>
-        <Route path='/Admin' element = {<Admin/>}/>
-        <Route path='/Loading' element = {<LoadingScreen/>}/>
-        <Route path='/Resto' element = {<Restaurant/>}/>        
-        {/* <Route path='/footer' element = {<Footer/>}/>        
-        <Route path='/header' element = {<Header/>}/>         */}
+      <div id='root'>
+      <Header/> 
+       {/* <TimedNav /> */}
+       <div className="Content">
+          <Routes>
+            <Route path = '/' element = {<AcceptSentimentNewsPage />}/>
+            <Route path ='/acc-news' element = {<AcceptSentimentNewsPage />} />
+            <Route path = '/newsAdmin' element = {<News />} />
+            <Route path ='/video' element = {<Video />}/>
+            <Route path ='/weather' element = {<Weather />} />
+            <Route path='/quote' element = {<Quotes/>}/>
+            <Route path='/Admin' element = {<Admin/>}/>
+            <Route path='/Loading' element = {<LoadingScreen/>}/>
+            <Route path='/Resto' element = {<Restaurant />}/>        
+            {/* <Route path='/footer' element = {<Footer/>}/>        
+            <Route path='/header' element = {<Header/>}/>         */}
 
-      </Routes>
-      <Footer />
+          </Routes>
+        </div>
+        <Footer/>
+      </div>
     </Router>
     
   );

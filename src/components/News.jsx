@@ -58,7 +58,7 @@ const News = () => {
             <td>
             {article.title}
             <p>{article.description}</p>
-            <p>Sentiment: {article.sentiment}</p>
+            {/* <p>Sentiment: {article.sentiment}</p> */}
             </td>
           
           <td>

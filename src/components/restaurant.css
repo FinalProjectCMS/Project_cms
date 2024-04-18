@@ -1,0 +1,19 @@
+.Restaurant-page{
+    margin-top: 15vh;
+    width: 99vw;
+
+    min-height: 100vh;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+.top-container{
+    text-align: center;
+}
+.restaurant-list{
+    text-align: justify;
+    color: #ffdf36;
+    list-style-type: decimal;
+}
