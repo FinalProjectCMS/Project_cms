@@ -8,6 +8,7 @@ const Admin = () => {
       await axios.post('http://localhost:3000/api/clear-database');
       
       alert('Database has been reset and repopulated successfully!');
+      window.location.reload();
     } catch (error) {
       console.error('Error during admin operations:', error.message);
       alert('Failed to complete admin operations.');
