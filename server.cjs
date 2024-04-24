@@ -138,7 +138,7 @@ async function fetchAndSaveWeather() {
   }
 }
 
-setInterval(fetchAndSaveWeather, 3800000);
+// setInterval(fetchAndSaveWeather, 3800000);
 
 
 //fetch video

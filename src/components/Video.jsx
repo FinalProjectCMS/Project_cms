@@ -45,9 +45,9 @@ const Video = () => {
         <div className='video-container'>
           <h1 className='page-title'>Video</h1>
           <div className="videotitle">
-          <a href={videourl}>
+          {/* <a href={videourl}>
             <QRCode className='QR' value={videourl} />
-          </a>
+          </a> */}
           <h2>{video_s.snippet.localized.title}</h2>
           </div>
           <img className='videoimg' src={video_s.snippet.thumbnails.maxres.url} alt="Thumbnail" width="400px" />

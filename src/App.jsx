@@ -19,7 +19,7 @@ function App() {
     <Router>
       <div id='root'>
       <Header/> 
-       {/* <TimedNav /> */}
+       <TimedNav />
        <div className="Content">
           <Routes>
             <Route path = '/' element = {<AcceptSentimentNewsPage />}/>
