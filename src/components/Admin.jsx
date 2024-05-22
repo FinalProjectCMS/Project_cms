@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
+import './admin.css'
 const Admin = () => {
   const handleAdminButtonClick = async () => {
     try {
@@ -16,7 +16,7 @@ const Admin = () => {
   };
 
   return (
-    <div>
+    <div className='adminpage'>
       <h2>Admin Operations</h2>
       <button onClick={handleAdminButtonClick}>Reset and Repopulate Database</button>
     </div>

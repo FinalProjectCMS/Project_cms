@@ -51,6 +51,7 @@ const Video = () => {
           <h2>{video_s.snippet.localized.title}</h2>
           </div>
           <img className='videoimg' src={video_s.snippet.thumbnails.maxres.url} alt="Thumbnail" width="400px" />
+          {/* <p>{video_s.snippet.localized.description}</p> */}
         </div>
       ):(
         <p>no video</p>

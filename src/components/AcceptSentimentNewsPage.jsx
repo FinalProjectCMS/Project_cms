@@ -28,7 +28,7 @@ const AcceptSentimentNewsPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setCurrentIndex((currentIndex+1)%acceptSentimentNews.length);
-    }, 5000);
+    }, 2000);
     return () => clearTimeout(timer);
   },[currentIndex,acceptSentimentNews]);
 
