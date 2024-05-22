@@ -19,7 +19,7 @@ const TimedNav = () => {
         }, 1000);
       };
   
-      if (location.pathname !== '/newsAdmin' || location.pathname !== '/Admin') {
+      if (location.pathname !== '/Admin') {
         const intervalId = setInterval(handleNavigation, 15000);
   
         return () => clearInterval(intervalId);
